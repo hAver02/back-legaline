@@ -28,7 +28,7 @@ const options = {
 
 
 const server = https.createServer(options, app);
-
+// const server = http.createServer(app);
 const PORT = 3000;
 //'https://srv471383.hstgr.cloud'
 
@@ -36,8 +36,8 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: config.hostDeploy || 'http://localhost:5173',
-    credentials: true
-    // methods : ['GET', 'POST', 'DELETE', 'PUT']
+    credentials: true,
+    methods : ['GET', 'POST', 'DELETE', 'PUT']
 }))
 
 app.use(express.urlencoded( { extended : false } ) )

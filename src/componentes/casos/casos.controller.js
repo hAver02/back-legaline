@@ -98,8 +98,16 @@ const addAlarma = async( idCase, idNotificacion ) => {
     }
 }
 
-
+const deleteCase = async (idCase) => {
+    try {
+       const rta = await casosModel.findByIdAndDelete(idCase); 
+       return rta;
+    } catch (error) {
+        throw new Error("Error deleting case");
+    }
+}
 module.exports = {
+    deleteCase,
     addCaso, 
     getCasos,
     addPeriodWorked,

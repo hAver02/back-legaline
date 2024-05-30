@@ -33,6 +33,14 @@ async function getNotiById(ids){
     }
 }
 
+async function deleteNoti(id){
+    try {
+        const deleteNoti = await notificacionesModel.deleteOne({_id : id});
+        return deleteNoti
+    } catch (error) {
+        throw Error ("Error deleting notificaciones");
+    }
+}
 
 
 
@@ -44,4 +52,5 @@ module.exports = {
     getNotis,
     addNoti,
     getNotiById,
+    deleteNoti
 }

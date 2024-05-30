@@ -29,7 +29,7 @@ async (req, res, next) => {
    
         res.header('Access-Control-Allow-Credentials', true);
         res.header('Access-Control-Allow-Origin', url);
-        res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true })
+        res.cookie('token', token);
         res.json({ ok : true, userID :  user._id })
     } catch (error) {
         // console.log(error);

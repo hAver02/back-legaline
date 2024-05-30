@@ -22,7 +22,7 @@ route.get('/', async(req, res, next) => {
     }
 })
 route.get('/getAlarmas/:arrayIDS',
-    // validateToken,
+    validateToken,
     // validatorHandler(getsNotisSchema, 'params'),
 async (req, res, next) => {
     try {
@@ -54,7 +54,15 @@ async (req, res, next) => {
     }
 })
 
-
+route.delete('/:id', validateToken ,async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteNoti = await controller.deleteNoti(id)
+        return res.json({ ok : true, message : 'Noti deleted sucesfully'})
+    } catch (error) {
+        return res.json({ok : false, message : "Error deleting alarm"})
+    }
+})
 
 
 

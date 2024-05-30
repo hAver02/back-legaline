@@ -1,6 +1,6 @@
-const chatModel = require('./chat.model')
+const chatModel = require('./chat.model');
 
-
+const messageController = require("./../message/messages.controller")
 
 async function addChat(chat){
     try {
@@ -33,6 +33,15 @@ async function getChat(id){
     }
 }
 
+async function getChatDos(id){
+    try {
+        const chat = await chatModel.findOne( { _id : id })
+        return chat
+    } catch (error) {
+        throw Error('Error al obtener el chat.')
+    }
+}
+
 async function addUserToChat(idChat, idUser){
     try {
         const updated = await chatModel.findByIdAndUpdate(idChat, {
@@ -58,10 +67,22 @@ async function deleteUserToChat(idChat, idUser){
     }
 
 }
+async function deleteChat(idChat){
+    try {
+        // borrar mensajes del chat.
+        const deleteMessages = await messageController.deleteMessagesByChat(idChat)
+        const data = await chatModel.deleteOne({_id : idChat});
+        return data
+    } catch (error) {
+        console.log(error);
+    }
+}
 module.exports = {
+    deleteChat,
     addChat,
     getChat,
     getChats,
     addUserToChat,
-    deleteUserToChat
+    deleteUserToChat,
+    getChatDos
 }

@@ -68,16 +68,17 @@ async function updateMessagesLeidos(ids, idUser){
         throw Error('Error al leer mensaje')
     }
 }
-// async function deleteAll(){
-//     try {
-//         const deleted = await messageModel.deleteMany({});
-//         console.log(deleted); return 1
-//     } catch (error) {
-        
-//     }
-// }
+async function deleteMessagesByChat(idChat){
+    try {
+        const data = messageModel.deleteMany({chat : idChat})
+        return data
+    } catch (error) {
+        console.log(error.message);
+        throw new Error("Error deleting messages!")
+    }
+}
 module.exports = {
-    // deleteAll,
+    deleteMessagesByChat,
     getMessagesByChat,
     addMessage,
     getMessages,

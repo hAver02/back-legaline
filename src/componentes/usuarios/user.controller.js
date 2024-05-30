@@ -73,10 +73,7 @@ async function deleteCase(idCase, idUser){
                 casos : idCase
             }
         })
-
         return updated
-        // console.log(userCasos, newUser);
-        return 'holis'
     } catch (error) {
         throw Error('Error al eliminar user ')
 

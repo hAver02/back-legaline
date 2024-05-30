@@ -3,7 +3,7 @@ const { Router } = require('express')
 const controller = require('./casos.controller')
 const userController = require('../usuarios/user.controller')
 const route = Router()
-
+const chatController = require("../chat/chat.controller");
 const { validatorError } = require('../../middleware/error.handler')
 const { validateToken } = require('../../middleware/validatorJWT')
 const validatorHandler = require('./../../middleware/validator.handler')
@@ -122,7 +122,7 @@ async(req, res, next) => {
 route.put('/addAlarma/:idCase/:idNotificacion',
     validateToken,
 async (req, res, next) => {
-    console.log(req.params);
+    // console.log(req.params);
     try {
         const { idCase, idNotificacion } = req.params
         const addAlarm = await controller.addAlarma(idCase, idNotificacion)
@@ -132,6 +132,31 @@ async (req, res, next) => {
     }
 })
 
+route.delete("/:id", validateToken, async (req, res) => {
+    const { id } = req.params
+    try {
+            const caso = await controller.getCasoById(id);
+            const { chat } = caso
+
+            // ELIMINAR SCAR DEL ARRAY CASOS DENTOR DE USER
+            const chatInfo = await chatController.getChatDos(chat);
+            if(chatInfo.users.length > 0){
+                chatInfo.users.forEach(async (user) => {
+                    await userController.deleteCase(id, user);
+                });
+            }
+            // ELIMINAR EL CHAT Y MENSAJES
+            const deleteChat = await chatController.deleteChat(chat);
+            // ELIMINAR LAS ALARMAS
+
+
+            //ELIMINAR CASO
+            const rta = await controller.deleteCase(id);
+            return res.json({ok : true, message: 'Caso deleted sucesfully'})
+    } catch (error) {
+        return res.json({ok : false, message: "Error deleting case"})
+    }
+})
 
 
 
